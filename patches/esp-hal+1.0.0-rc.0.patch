@@ -1,0 +1,31 @@
+diff --git a/src/system.rs b/src/system.rs
+index 60750ce..42ddd66 100755
+--- a/src/system.rs
++++ b/src/system.rs
+@@ -268,12 +268,14 @@ impl Drop for PeripheralGuard {
+     }
+ }
+ 
++#[allow(missing_docs)]
+ #[derive(Debug)]
+ #[cfg_attr(feature = "defmt", derive(defmt::Format))]
+-pub(crate) struct GenericPeripheralGuard<const P: u8> {}
++pub struct GenericPeripheralGuard<const P: u8> {}
+ 
+ impl<const P: u8> GenericPeripheralGuard<P> {
+-    pub(crate) fn new_with(init: fn(CriticalSection<'_>)) -> Self {
++    #[allow(missing_docs)]
++    pub fn new_with(init: fn(CriticalSection<'_>)) -> Self {
+         let peripheral = unwrap!(Peripheral::try_from(P));
+         critical_section::with(|cs| {
+             if !Peripheral::KEEP_ENABLED.contains(&peripheral)
+@@ -287,7 +289,8 @@ impl<const P: u8> GenericPeripheralGuard<P> {
+         Self {}
+     }
+ 
+-    pub(crate) fn new() -> Self {
++    #[allow(missing_docs)]
++    pub fn new() -> Self {
+         Self::new_with(|_| {})
+     }
+ }

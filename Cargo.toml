@@ -1,0 +1,43 @@
+[package]
+name = "visor"
+version = "0.1.0"
+authors = ["Q Misell <q@magicalcodewit.ch>"]
+edition = "2021"
+
+[dependencies]
+esp-bootloader-esp-idf = { version = "0.2.0", features = ["esp32s3"] }
+esp-hal = { version = "1.0.0-rc.0", features = [ "esp32s3", "unstable" ] }
+esp-hal-embassy = { version = "0.9", features = [ "esp32s3" ] }
+esp-alloc = { version = "0.8" }
+embassy-executor = { version = "0.7", features = ["task-arena-size-32768"] }
+embassy-time = { version = "0.4", features = ["generic-queue-8"]}
+embassy-sync = "0.7"
+embassy-embedded-hal = "0.4"
+embedded-hal = "1.0"
+embedded-hal-async = "1.0"
+log = "0.4"
+embassy-futures = "0.1"
+static_cell = "2"
+heapless = "0.8.0"
+esp-metadata-generated = { version = "0.3.0", features = ["esp32s3"] }
+
+[patch.crates-io]
+esp-hal = { path = "target/patch/esp-hal-1.0.0-rc.0" }
+
+[profile.dev]
+opt-level = 3
+
+[profile.release]
+codegen-units = 1
+debug = 2
+debug-assertions = false
+incremental = false
+lto = "fat"
+opt-level = 3
+overflow-checks = false
+
+[build-dependencies]
+patch-crate = "0.1"
+
+[package.metadata.patch]
+crates = ["esp-hal"]
