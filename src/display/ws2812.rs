@@ -180,4 +180,15 @@ impl Color {
     pub const fn new(r: u8, g: u8, b: u8) -> Self {
         Self { r, g, b }
     }
+
+    pub fn apply_brightness(&self, brightness: u8) -> Self {
+        let r = (self.r as u16 * brightness as u16) / 100;
+        let g = (self.g as u16 * brightness as u16) / 100;
+        let b = (self.b as u16 * brightness as u16) / 100;
+        Self {
+            r: r as u8,
+            g: g as u8,
+            b: b as u8,
+        }
+    }
 }

@@ -13,7 +13,7 @@ fn main() {
             let mut line_val = 0;
             for (i, pixel) in line.chars().enumerate() {
                 if pixel == '#' {
-                    line_val |= 1 << (7 - i);
+                    line_val |= 1 << i;
                 } else if pixel != '_' {
                     panic!("Unexpected pixel: {}", pixel);
                 }

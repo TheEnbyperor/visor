@@ -9,6 +9,7 @@ extern crate log;
 extern crate alloc;
 
 use core::mem::MaybeUninit;
+use embedded_hal_async::digital::Wait;
 
 mod init;
 mod display;
@@ -25,5 +26,17 @@ pub static UART_TX: embassy_sync::mutex::Mutex<
 
 #[embassy_executor::task]
 async fn main() {
+    let button_pin = unsafe { esp_hal::peripherals::GPIO0::steal() };
+    let mut button = esp_hal::gpio::Input::new(
+        button_pin,
+        esp_hal::gpio::InputConfig::default().with_pull(esp_hal::gpio::Pull::Up)
+    );
+
     info!("Running!");
+
+    loop {
+        button.wait_for_low().await;
+        display::NEXT_EYE.signal(());
+        button.wait_for_high().await;
+    }
 }
